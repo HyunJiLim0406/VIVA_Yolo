@@ -1,14 +1,29 @@
-from flask import Flask, url_for, render_template, Response
+import os
+from flask import Flask, url_for, render_template, Response, flash, request, redirect, session
 from darkflow.net.build import TFNet
 from facenet.src import facenet
 from facenet.src.align import detect_face
+from werkzeug.utils import secure_filename
+from flask_cors import CORS, cross_origin
+import logging
 import cv2
 import tensorflow as tf
 import numpy as np
 import pickle
 from scipy import misc
 
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger('HELLO WORLD')
+
+
+
+UPLOAD_FOLDER = 'uploads/'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 #모델 넣는 부분
 options = {"model": "/home/rohitner/tensorflow/darkflow/cfg/tiny-yolo-voc.cfg",
            "load": "/home/rohitner/tensorflow/darkflow/bin/tiny-yolo-voc.weights",
@@ -103,5 +118,23 @@ def gen(camera):
 def hello():
     return 'Hello, World!'
 
+#리액트에서 업로드한 사진 받는 부분
+@app.route('/upload', methods=['POST'])
+def fileUpload():
+    target=os.path.join(UPLOAD_FOLDER,'test_docs')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    logger.info("welcome to upload`")
+    file = request.files['file'] 
+    filename = secure_filename(file.filename)
+    destination="/".join([target, filename])
+    file.save(destination)
+    session['uploadFilePath']=destination
+    response="Whatever you wish to return"
+    return response
+
 if __name__ == '__main__':
+    app.secret_key = os.urandom(24)
     app.run(host='0.0.0.0', debug=False)
+
+flask_cors.CORS(app, expose_headers='Authorization')
