@@ -254,4 +254,16 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
+#.idea
+
+.idea/.gitignore
+.idea/VIVA_Yolo.iml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+
+
+
 # End of https://www.toptal.com/developers/gitignore/api/vscode,windows,python,flask
