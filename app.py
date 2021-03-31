@@ -5,11 +5,13 @@ from facenet.src import facenet
 from facenet.src.align import detect_face
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
+from PIL import Image
 import logging
 import cv2
 import tensorflow as tf
 import numpy as np
 import pickle
+import glob
 from scipy import misc
 
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +31,11 @@ options = {"model": "/home/rohitner/tensorflow/darkflow/cfg/tiny-yolo-voc.cfg",
            "load": "/home/rohitner/tensorflow/darkflow/bin/tiny-yolo-voc.weights",
            "threshold": 0.1, "gpu": 0.8}
 tfnet = TFNet(options)
+
+#uploads 폴더의 jpg 파일을 모두 찾아서 images에 저장
+images = glob.glob('uploads/*.jpg')
+for fname in images:
+    #여기서 이미지 처리하면 됨
 
 #여기가 바운딩박스 생성하는 부분 같은데 무슨 코드인지는 잘 모르겠음. 일단 그대로 넣어놓음 수정 필요
 def gen(camera):
@@ -121,7 +128,7 @@ def hello():
 #리액트에서 업로드한 사진 받는 부분
 @app.route('/upload', methods=['POST'])
 def fileUpload():
-    target=os.path.join(UPLOAD_FOLDER,'test_docs')
+    target=os.path.join(UPLOAD_FOLDER,'test')
     if not os.path.isdir(target):
         os.mkdir(target)
     logger.info("welcome to upload`")
