@@ -34,8 +34,9 @@ tfnet = TFNet(options)
 
 #uploads 폴더의 jpg 파일을 모두 찾아서 images에 저장
 images = glob.glob('uploads/*.jpg')
-for fname in images:
-    #여기서 이미지 처리하면 됨
+def detect_images:
+    for fname in images:
+        #여기서 이미지 처리하면 됨
 
 #여기가 바운딩박스 생성하는 부분 같은데 무슨 코드인지는 잘 모르겠음. 일단 그대로 넣어놓음 수정 필요
 def gen(camera):
